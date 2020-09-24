@@ -345,8 +345,9 @@ export class ExceptionBase extends generated.ExceptionBase {
             var outputArray = output.ToArray();
             Assert.Equal(4, outputArray.Length);
 
-            Assert.Equal("Exception", outputArray[0].BaseTypeName);
-            Assert.Contains("xyz: boolean", outputArray[0].Code);
+            var codeArtifact =Assert.Single(outputArray, x => x.TypeName == "ExceptionBase");
+            Assert.Equal("Exception", codeArtifact.BaseTypeName);
+            Assert.Contains("xyz: boolean", codeArtifact.Code);
         }
     }
 }

@@ -51,12 +51,13 @@ namespace NJsonSchema.CodeGeneration
         {
             schema = RemoveNullability(schema).ActualSchema;
 
-            RegisterSchemaDefinitions(schema.Definitions);
-
             if (!_generatedTypeNames.ContainsKey(schema))
             {
                 var reservedTypeNames = _generatedTypeNames.Values.Distinct().ToList();
+                _generatedTypeNames[schema] = "___resolving___"; // prevent stack overflow
                 _generatedTypeNames[schema] = _settings.TypeNameGenerator.Generate(schema, typeNameHint, reservedTypeNames);
+
+                RegisterSchemaDefinitions(schema.Definitions);
             }
 
             return _generatedTypeNames[schema];
