@@ -1049,14 +1049,14 @@ namespace NJsonSchema.Generation
                             var baseSchema = Generate(baseType, schemaResolver);
                             if (requiresSchemaReference)
                             {
-                                if (schemaResolver.RootObject != baseSchema.ActualSchema)
+                                if (schemaResolver.RootObject != baseSchema)
                                 {
-                                    schemaResolver.AppendSchema(baseSchema.ActualSchema, Settings.SchemaNameGenerator.Generate(baseType));
+                                    schemaResolver.AppendSchema(baseSchema, Settings.SchemaNameGenerator.Generate(baseType));
                                 }
 
                                 schema.AllOf.Add(new JsonSchema
                                 {
-                                    Reference = baseSchema.ActualSchema
+                                    Reference = baseSchema
                                 });
                             }
                             else
@@ -1064,8 +1064,12 @@ namespace NJsonSchema.Generation
                                 schema.AllOf.Add(baseSchema);
                             }
 
-                            // First schema is the (referenced) base schema, second is the type schema itself
-                            schema.AllOf.Add(actualSchema);
+                            if (actualSchema.Properties.Any() || actualSchema.AdditionalPropertiesSchema != null)
+                            {
+                                // First schema is the (referenced) base schema, second is the type schema itself
+                                schema.AllOf.Add(actualSchema);
+                            }
+
                             return actualSchema;
                         }
                         else

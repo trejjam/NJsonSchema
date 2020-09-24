@@ -153,7 +153,7 @@ namespace NJsonSchema
                 {
                     if (!_removeExternalReferences || reference.Reference.DocumentPath == null)
                     {
-                        _schemaReferences[reference] = reference.Reference.ActualObject;
+                        _schemaReferences[reference] = reference.Reference;
                     }
                     else
                     {
